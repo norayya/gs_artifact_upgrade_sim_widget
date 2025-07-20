@@ -1,4 +1,4 @@
-import {MainStatValue, Stat, SubStatValue} from "./stat";
+import {MainStat, Stat, SubStat} from "./stat";
 import {get_random_int, ruletka} from "./utils";
 
 /**
@@ -15,14 +15,14 @@ export enum ArtifactType {
 /**
  * 副词条
  */
-export type SubStat = { sub_stat: Stat, upgrade_ranks: number[] }
+export type SubStatObject = { sub_stat: Stat, upgrade_ranks: number[] }
 
 /**
  * 圣遗物
  */
 export class Artifact {
     private main: Stat;
-    private sub: SubStat[];
+    private sub: SubStatObject[];
     private level: number;
     private type: ArtifactType;
 
@@ -38,7 +38,7 @@ export class Artifact {
         this.type = artifact_type;
 
         // 根据传入的部位确定主词条
-        this.main = MainStatValue.get_random_main_stat_by_artifact_type(artifact_type);
+        this.main = Artifact.get_random_main_stat_by_artifact_type(artifact_type);
         this.sub = [];
 
         // 开始添加初始的副词条
@@ -58,7 +58,7 @@ export class Artifact {
             });
 
             // 随机获得新的词条
-            const new_stat = SubStatValue.get_new_sub_stat([this.main, ...subs]);
+            const new_stat = SubStat.get_new_sub_stat([this.main, ...subs]);
             // 为词条选择一个初始强化档位
             const upgrade_rank = get_random_int(0, 4);
 
@@ -101,7 +101,7 @@ export class Artifact {
                     subs.push(x.sub_stat);
                 });
                 // 随机获得新的词条
-                const new_stat = SubStatValue.get_new_sub_stat([this.main, ...subs]);
+                const new_stat = SubStat.get_new_sub_stat([this.main, ...subs]);
                 // 为词条选择一个初始强化档位
                 const upgrade_rank = get_random_int(0, 4);
 
@@ -117,6 +117,48 @@ export class Artifact {
             }
         }
 
+    }
+
+    /**
+     * 根据传入的圣遗物部位取可能出现的主词条类型
+     *
+     * @param {ArtifactType} artifact_type 圣遗物部位
+     *
+     * @returns {Stat} 主词条类型
+     *
+     * @throws {Error} 参数错误
+     */
+    private static get_random_main_stat_by_artifact_type(artifact_type: ArtifactType): Stat {
+        switch (artifact_type) {
+            case ArtifactType.Flower:
+                return Stat.Hp;
+            case ArtifactType.Plume:
+                return Stat.Atk;
+            case ArtifactType.Sands:
+                return ruletka(
+                    [
+                        Stat.HpPercent, Stat.AtkPercent, Stat.DefPercent,
+                        Stat.EnergyRecharge, Stat.ElementalMastery
+                    ]);
+            case ArtifactType.Goblet:
+                return ruletka(
+                    [
+                        Stat.HpPercent, Stat.AtkPercent, Stat.DefPercent,
+                        Stat.ElementalDamageBonus, Stat.PhysicalDamageBonus,
+                        Stat.ElementalMastery
+                    ]
+                );
+            case ArtifactType.Circlet:
+                return ruletka(
+                    [
+                        Stat.HpPercent, Stat.AtkPercent, Stat.DefPercent,
+                        Stat.CriticalRate, Stat.CriticalDamage,
+                        Stat.HealingBonus, Stat.ElementalMastery
+                    ]
+                );
+            default:
+                throw new Error("参数错误");
+        }
     }
 
 }

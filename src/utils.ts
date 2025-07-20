@@ -35,3 +35,4 @@ export function ruletka<T>(array: T[]): T {
     const idx = get_random_int(0, array.length);
     return array[idx];
 }
+
