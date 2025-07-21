@@ -108,6 +108,12 @@ class DomController {
         }
     }
 
+    /**
+     * 添加强化/获得词条信息到强化日志
+     * @param t
+     * @param sub_stat
+     * @param rank
+     */
     public static add_level_up_log(t: string, sub_stat: Stat, rank: number): void {
         if(this.Dom.level_up_log_view !== null){
             const zh_cn_sub_stat = StatTypeTranslate(sub_stat);
