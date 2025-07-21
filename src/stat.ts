@@ -38,6 +38,24 @@ export enum ElementalDamageStat {
     GeoDamageBonus = 6,         // 岩属性伤害加成
 }
 
+/**
+ * 如果是百分比数值, 转换为百分比字符串
+ *
+ * 否则直接转换为字符串
+ * @param n
+ */
+export const ParseString = (n: number): string => {
+    // 取词条当前强化档位对应的数值
+
+    let str = '';
+    if(n <= 1){
+        str = (n*100).toFixed(2).toString();
+        str += "%";
+    }else{
+        str = n.toString();
+    }
+    return str;
+}
 
 /**
  * 主词条

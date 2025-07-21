@@ -10,13 +10,17 @@
             margin-bottom: 20px;
             background-color: #f9f9f9;
             border-radius: 5px;
+            min-height: 260px;
         }
         .level-up-log-view {
             border: 1px solid #ccc;
             padding: 15px;
+            margin-top: 20px;
             margin-bottom: 20px;
             background-color: #f9f9f9;
             border-radius: 5px;
+            min-height: 280px;
+            font-size: 14px;
         }
         button {
             padding: 8px 15px;
@@ -26,6 +30,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+
         }
         button:hover {
             background-color: #45a049;
@@ -50,20 +55,23 @@
 </div>
 
 <div>
-    <label for="init-level">初始等级 (0-20):</label>
-    <input type="number" id="init-level" min="0" max="20" value="0" />
+    <div>
+        <label for="init-level">初始等级 (0-20):</label>
+        <input type="number" id="init-level" min="0" max="20" value="0" />
 
-    <label for="init-artifact-type">选择部位</label>
-    <select id="init-artifact-type" name="init-artifact-type">
-        <option value="0">花</option>
-        <option value="1">毛</option>
-        <option value="2">沙</option>
-        <option value="3">杯</option>
-        <option value="4">头</option>
-    </select>
-
-    <button id="gen-btn">生成圣遗物</button>
-    <button id="level-up-btn">强化圣遗物</button>
+        <label for="init-artifact-type">选择部位</label>
+        <select id="init-artifact-type" name="init-artifact-type">
+            <option value="0">花</option>
+            <option value="1">毛</option>
+            <option value="2">沙</option>
+            <option value="3">杯</option>
+            <option value="4">头</option>
+        </select>
+    </div>
+    <div>
+        <button id="gen-btn">生成圣遗物</button>
+        <button id="level-up-btn">强化圣遗物</button>
+    </div>
 </div>
 
 <div class="level-up-view" style="display: none;">

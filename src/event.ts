@@ -33,6 +33,13 @@ export class Event<T> {
     }
 
     /**
+     * 清除所有事件
+     */
+    public clear_subscribe(){
+        this.handles = [];
+    }
+
+    /**
      * 触发事件
      *
      * @template T

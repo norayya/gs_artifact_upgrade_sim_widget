@@ -14,6 +14,20 @@ export enum ArtifactType {
 }
 
 /**
+ * 圣遗物部位类型翻译
+ * @param artifact_type 圣遗物部位类型
+ */
+export function ArtifactTypeTranslate(artifact_type: ArtifactType): string{
+    switch(artifact_type){
+        case ArtifactType.Flower: return "生之花";
+        case ArtifactType.Plume: return "死之羽";
+        case ArtifactType.Sands: return "时之沙";
+        case ArtifactType.Goblet: return "空之杯";
+        case ArtifactType.Circlet: return "理之冠"
+    }
+}
+
+/**
  * 副词条
  */
 export type SubStatObject = { sub_stat: Stat, upgrade_ranks: number[] }
@@ -209,4 +223,13 @@ export class Artifact {
      */
     public get_sub_stat = () => this.sub;
 
+    /**
+     * 取当前圣遗物部位类型
+     */
+    public get_artifact_type = () => this.type;
+
+    /**
+     * 取当前圣遗物主词条
+     */
+    public get_main_type = () => this.main;
 }
