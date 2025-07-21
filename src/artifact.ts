@@ -107,7 +107,7 @@ export class Artifact {
             });
 
             // 通知事件
-            this.on_new_sub_stat_added.emit({sub_stat: new_stat, rank: i});
+            this.on_new_sub_stat_added.emit({sub_stat: new_stat, rank: upgrade_rank});
 
         }
 

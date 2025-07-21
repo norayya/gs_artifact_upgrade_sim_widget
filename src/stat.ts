@@ -49,7 +49,7 @@ export const ParseString = (n: number): string => {
 
     let str = '';
     if(n <= 1){
-        str = (n*100).toFixed(2).toString();
+        str = (n*100).toFixed(1).toString();
         str += "%";
     }else{
         str = n.toString();

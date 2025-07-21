@@ -31,16 +31,6 @@ class DomController {
     }
 
     /**
-     * 向强化日志窗口添加一个强化词条日志
-     * @param inner
-     */
-    public static add_level_up_log(inner: string): void {
-        if(this.Dom.level_up_log_view !== null){
-            (this.Dom.level_up_log_view as HTMLElement).innerHTML += inner;
-        }
-    }
-
-    /**
      * 获取初始的圣遗物强化等级
      */
     public static get_init_artifact_level(): number | undefined {
@@ -82,6 +72,10 @@ class DomController {
     }
 
 
+    /**
+     * 更新圣遗物描述内容
+     * @param artifact
+     */
     public static update_artifact_view(artifact: Artifact): void {
         if(this.Dom.artifact_view !== null){
             //
@@ -111,6 +105,16 @@ class DomController {
 
             (this.Dom.artifact_view as HTMLElement).innerHTML = r;
 
+        }
+    }
+
+    public static add_level_up_log(t: string, sub_stat: Stat, rank: number): void {
+        if(this.Dom.level_up_log_view !== null){
+            const zh_cn_sub_stat = StatTypeTranslate(sub_stat);
+            const sub_stat_value = ParseString(SubStat.get_value_by_rank(sub_stat, rank));
+            const inner = `<p>${t} ${zh_cn_sub_stat} +${sub_stat_value}</p>`;
+
+            (this.Dom.level_up_log_view as HTMLElement).innerHTML += inner;
         }
     }
 
@@ -164,9 +168,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     const sub_stat = new_artifact.get_sub_stat()[x.sub_stat_idx];
 
 
-                    const inner_add_level = `<p>强化词条 ${StatTypeTranslate(sub_stat.sub_stat)} +${ParseString(SubStat.get_value_by_rank(sub_stat.sub_stat, x.rank))}</p>`;
+                    //const inner_add_level = `<p>强化词条 ${StatTypeTranslate(sub_stat.sub_stat)} +${ParseString(SubStat.get_value_by_rank(sub_stat.sub_stat, x.rank))}</p>`;
 
-                    DomController.add_level_up_log(inner_add_level);
+                    DomController.add_level_up_log("强化词条", sub_stat.sub_stat, x.rank);
 
                     // 添加到圣遗物描述窗口
                     DomController.update_artifact_view(new_artifact);
@@ -177,19 +181,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     // 取词条当前强化档位对应的数值
                     const value = SubStat.get_value_by_rank(x.sub_stat, x.rank);
 
-                    // 如果是百分比数值, 转换为百分比字符串
-                    // 否则直接转换为字符串
-                    let value_str = '';
-                    if(value <= 1 ){
-                        value_str = (value*100).toFixed(2).toString();
-                        value_str += '%';
-                    } else{
-                        value_str = value.toString();
-                    }
+                    DomController.add_level_up_log("获得词条", x.sub_stat, x.rank);
 
-                    const inner = `<p>获得词条 ${StatTypeTranslate(x.sub_stat)} +${value_str}</p>`;
-
-                    DomController.add_level_up_log(inner);
                 })
             });
 
