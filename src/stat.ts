@@ -309,3 +309,41 @@ export class SubStat {
 
     }
 }
+
+/**
+ * 翻译词条类型
+ * @param {Stat} stat 词条
+ */
+export function StatTypeTranslate(stat: Stat): string {
+    switch(stat){
+        case Stat.Hp: return "生命值";
+        case Stat.Atk: return "攻击力";
+        case Stat.Def: return "防御力";
+        case Stat.HpPercent: return "生命值%";
+        case Stat.AtkPercent: return "攻击力%";
+        case Stat.DefPercent: return "防御力%";
+        case Stat.ElementalMastery: return "元素精通";
+        case Stat.EnergyRecharge: return "元素充能效率";
+        case Stat.CriticalRate: return "暴击率";
+        case Stat.CriticalDamage: return "暴击伤害";
+        case Stat.HealingBonus: return "治疗加成";
+        case Stat.ElementalDamageBonus: return "元素伤害加成";
+        case Stat.PhysicalDamageBonus: return "物理伤害加成";
+    }
+}
+
+/**
+ * 翻译元素伤害加成词条
+ * @param {ElementalDamageStat} e_stat 词条
+ */
+export function ElementalDamageBonusTypeTranslate(e_stat: ElementalDamageStat): string {
+    switch(e_stat){
+        case ElementalDamageStat.PyroDamageBonus: return "火属性伤害加成";
+        case ElementalDamageStat.ElectroDamageBonus: return "雷属性伤害加成";
+        case ElementalDamageStat.CryoDamageBonus: return "冰属性伤害加成";
+        case ElementalDamageStat.HydroDamageBonus: return "水属性伤害加成";
+        case ElementalDamageStat.DendroDamageBonus: return "草属性伤害加成";
+        case ElementalDamageStat.AnemoDamageBonus: return "风属性伤害加成";
+        case ElementalDamageStat.GeoDamageBonus: return "岩属性伤害加成";
+    }
+}

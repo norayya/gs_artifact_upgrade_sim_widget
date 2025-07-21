@@ -1,5 +1,6 @@
 import {MainStat, Stat, SubStat} from "./stat";
 import {get_random_int, ruletka} from "./utils";
+import {Event} from "./event";
 
 /**
  * 圣遗物部位
@@ -27,15 +28,38 @@ export class Artifact {
     private type: ArtifactType;
 
     /**
+     * 添加词条事件
+     * @template T {sub_stat:Stat, rank: number} , sub_stat是被添加的词条类型， rank是初始化词条的强化档位
+     */
+    public on_new_sub_stat_added: Event<{sub_stat: Stat, rank: number}>;
+
+    /**
+     * 词条被强化事件
+     * @template T {sub_stat_idx:number， rank: number}, sub_stat_idx是被强化的词条是圣遗物的哪条词条, rank是这次强化随机到的强化档位
+     */
+    public on_sub_stat_upgraded: Event<{sub_stat_idx: number, rank: number}>;
+
+    /**
      * 创建一个圣遗物
      * @param {ArtifactType} artifact_type 圣遗物部位
+     * @param {(artifact: Artifact) => void} opts 配置选项
      */
-    constructor(artifact_type: ArtifactType) {
+    constructor(artifact_type: ArtifactType, opts?:(artifact: Artifact) => void) {
         // 初始强化等级 0
         this.level = 0;
 
         // 类型
         this.type = artifact_type;
+
+        // 初始化事件订阅器
+        this.on_new_sub_stat_added = new Event<{sub_stat: Stat, rank: number}>();
+        this.on_sub_stat_upgraded = new Event<{sub_stat_idx: number, rank: number}>();
+
+        // 配置opts
+        if(opts !== undefined){
+            opts(this);
+        }
+
 
         // 根据传入的部位确定主词条
         this.main = Artifact.get_random_main_stat_by_artifact_type(artifact_type);
@@ -68,9 +92,14 @@ export class Artifact {
                 upgrade_ranks: [upgrade_rank]
             });
 
+            // 通知事件
+            this.on_new_sub_stat_added.emit({sub_stat: new_stat, rank: i});
+
         }
 
     }
+
+
 
     /**
      * 强化一级
@@ -110,10 +139,19 @@ export class Artifact {
                     sub_stat: new_stat,
                     upgrade_ranks: [upgrade_rank]
                 });
+
+                // 通知事件
+                this.on_new_sub_stat_added.emit({sub_stat: new_stat, rank: upgrade_rank});
+
             } else {
                 // 如果已经有4个词条了,
                 // 那么选中其中一个词条, 然后添加一个强化档位
-                ruletka(this.sub).upgrade_ranks.push(get_random_int(0, 4));
+                const sub = ruletka(this.sub);
+                const rank = get_random_int(0, 4);
+                sub.upgrade_ranks.push(rank);
+
+                // 通知事件
+                this.on_sub_stat_upgraded.emit({sub_stat_idx: this.sub.findIndex(x => x.sub_stat === sub.sub_stat && x.upgrade_ranks === sub.upgrade_ranks), rank});
             }
         }
 
@@ -160,5 +198,15 @@ export class Artifact {
                 throw new Error("参数错误");
         }
     }
+
+    /**
+     * 取当前圣遗物强化等级
+     */
+    public current_level = () => this.level;
+
+    /**
+     * 取当前圣遗物副词条
+     */
+    public get_sub_stat = () => this.sub;
 
 }
