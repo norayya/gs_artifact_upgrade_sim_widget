@@ -30,7 +30,7 @@ export type StatsTableObject = { mainStatValue?: number[], subStatValue?: number
  * 相关文档: https://genshin-impact.fandom.com/wiki/Artifact/Stats
  */
 export const StatsTable : Record<Stat, StatsTableObject> = {
-    0 : {
+    [Stat.Hp] : {
         // 生命值
         mainStatValue: [
             717, 920, 1123, 1326, 1530,
@@ -44,7 +44,7 @@ export const StatsTable : Record<Stat, StatsTableObject> = {
             "zh_cn": "生命值"
         }
     },
-    1: {
+    [Stat.Atk]: {
         // 攻击力
         mainStatValue: [
             47, 60, 73, 86, 100,
@@ -58,7 +58,7 @@ export const StatsTable : Record<Stat, StatsTableObject> = {
             "zh_cn": "攻击力"
         }
     },
-    2: {
+    [Stat.Def]: {
         // 防御力
         mainStatValue: undefined,
         subStatValue: [16, 19, 21, 23],
@@ -67,7 +67,7 @@ export const StatsTable : Record<Stat, StatsTableObject> = {
             "zh_cn": "防御力"
         }
     },
-    3: {
+    [Stat.HpPercent]: {
         // 生命值 百分比
         mainStatValue: [
             0.07, 0.09, 0.11, 0.129, 0.149,
@@ -81,7 +81,7 @@ export const StatsTable : Record<Stat, StatsTableObject> = {
             "zh_cn": "生命值"
         }
     },
-    4: {
+    [Stat.AtkPercent]: {
         // 攻击力 百分比
         mainStatValue: [
             0.07, 0.09, 0.11, 0.129, 0.149,
@@ -95,7 +95,7 @@ export const StatsTable : Record<Stat, StatsTableObject> = {
             "zh_cn": "攻击力"
         }
     },
-    5: {
+    [Stat.DefPercent]: {
         // 防御力 百分比
         mainStatValue: [
             0.087, 0.112, 0.137, 0.162, 0.186,
@@ -109,7 +109,7 @@ export const StatsTable : Record<Stat, StatsTableObject> = {
             "zh_cn": "防御力"
         }
     },
-    6: {
+    [Stat.ElementalMastery]: {
         // 元素精通
         mainStatValue: [
             28, 36, 44, 52, 60,
@@ -123,7 +123,7 @@ export const StatsTable : Record<Stat, StatsTableObject> = {
             "zh_cn": "元素精通"
         }
     },
-    7: {
+    [Stat.EnergyRecharge]: {
         // 元素充能效率
         mainStatValue:[
             0.078, 0.1, 0.122, 0.144, 0.166,
@@ -137,7 +137,7 @@ export const StatsTable : Record<Stat, StatsTableObject> = {
             "zh_cn": "元素充能效率"
         }
     },
-    8: {
+    [Stat.CriticalRate]: {
         // 暴击率
         mainStatValue: [
             0.047, 0.06, 0.073, 0.086, 0.099,
@@ -151,7 +151,7 @@ export const StatsTable : Record<Stat, StatsTableObject> = {
             "zh_cn": "暴击率"
         }
     },
-    9: {
+    [Stat.CriticalDamage]: {
         // 暴击伤害
         mainStatValue: [
             0.093, 0.12, 0.146, 0.173, 0.199,
@@ -165,7 +165,7 @@ export const StatsTable : Record<Stat, StatsTableObject> = {
             "zh_cn": "暴击伤害"
         }
     },
-    10: {
+    [Stat.HealingBonus]: {
         // 治疗加成
         mainStatValue: [
             0.054, 0.069, 0.084, 0.1, 0.115,
@@ -178,7 +178,7 @@ export const StatsTable : Record<Stat, StatsTableObject> = {
             "zh_cn": "治疗加成"
         }
     },
-    11: {
+    [Stat.ElementalDamageBonus]: {
         // 元素伤害加成
         mainStatValue: [
             0.07, 0.09, 0.11, 0.129, 0.149,
@@ -191,7 +191,7 @@ export const StatsTable : Record<Stat, StatsTableObject> = {
             "zh_cn": "元素伤害加成"
         }
     },
-    12: {
+    [Stat.PhysicalDamageBonus]: {
         // 物理伤害加成
         mainStatValue: [
             0.087, 0.112, 0.137, 0.162, 0.186,
@@ -253,11 +253,13 @@ export class SubStat {
          */
 
         // 取可能出现的副词条类型 和 已有词条的差集
-        const pool = this.probability_sub_stats.filter(x => !current_stats.includes(x));
+        const ev = Object.keys(Stat).filter(k => !isNaN(Number(k))).map( k=> Number(k)) as Stat[];
+        const pool: Stat[] = ev.filter(k => StatsTable[k].subStatValue !== undefined && StatsTable[k].subStatWeight !== undefined)
+            .filter(k => !current_stats.includes(k));
 
         // 求权重和
         let sum_w: number = 0;
-        pool.forEach(x => sum_w += this.get_sub_stat_weight(x));
+        pool.forEach(x => sum_w += StatsTable[x].subStatWeight as number);
 
         // 对权重和求随机数
         const r = get_random_int(0, sum_w);
@@ -266,7 +268,7 @@ export class SubStat {
         let k = 0;
 
         for (let i = 0; i < pool.length; i++) {
-            k += this.get_sub_stat_weight(pool[i]);
+            k += StatsTable[pool[i]].subStatWeight as number;
             if(k >= r) {
                 return pool[i];
             }

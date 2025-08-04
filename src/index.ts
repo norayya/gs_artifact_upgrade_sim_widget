@@ -1,5 +1,5 @@
 import {Artifact, ArtifactType, ArtifactTypeTranslate} from "./artifact";
-import {MainStat, ParseString, Stat, StatTypeTranslate, SubStat} from "./stat";
+import {ParseString, Stat, StatsTable, SubStat} from "./stat";
 import {EventHandle} from "./event";
 
 // 全局变量
@@ -83,18 +83,18 @@ class DomController {
             const head = `<p style="font-size: 20px; font-weight: bold">${zh_cn_artifact_type} (+${artifact.current_level()})</p>`;
 
             // 主词条
-            const zh_cn_main_stat = StatTypeTranslate(artifact.get_main_type());
-            const main_stat_value = MainStat.get_value_by_level(artifact.get_main_type() ,artifact.current_level());
+            const zh_cn_main_stat = (StatsTable[artifact.get_main_type()].localization as Record<string, string>)["zh_cn"];
+            const main_stat_value = (StatsTable[artifact.get_main_type()].mainStatValue as number[])[artifact.current_level()];
             const main = `<p>${zh_cn_main_stat} +${ParseString(main_stat_value)}</p>`
 
             // 副词条
             let t = '';
             for(let i=0; i< artifact.get_sub_stat().length; i++){
-                const zh_cn_sub_stat = StatTypeTranslate(artifact.get_sub_stat()[i].sub_stat);
+                const zh_cn_sub_stat = (StatsTable[artifact.get_sub_stat()[i].sub_stat].localization as Record<string, string>)["zh_cn"];
                 let v = 0;
                 // 叠加强化值
                 for(let j=0; j<artifact.get_sub_stat()[i].upgrade_ranks.length; j++){
-                    const table = SubStat.get_value_by_rank(artifact.get_sub_stat()[i].sub_stat, artifact.get_sub_stat()[i].upgrade_ranks[j]);
+                    const table = (StatsTable[artifact.get_sub_stat()[i].sub_stat as Stat].subStatValue as number[])[artifact.get_sub_stat()[i].upgrade_ranks[j]];
                     v += table;
                 }
                 const v_str = ParseString(v);
@@ -116,8 +116,9 @@ class DomController {
      */
     public static add_level_up_log(t: string, sub_stat: Stat, rank: number): void {
         if(this.Dom.level_up_log_view !== null){
-            const zh_cn_sub_stat = StatTypeTranslate(sub_stat);
-            const sub_stat_value = ParseString(SubStat.get_value_by_rank(sub_stat, rank));
+            const zh_cn_sub_stat = (StatsTable[sub_stat].localization as Record<string, string>)["zh_cn"];
+            const stat_value = (StatsTable[sub_stat].subStatValue as number[])[rank];
+            const sub_stat_value = ParseString(stat_value);
             const inner = `<p>${t} ${zh_cn_sub_stat} +${sub_stat_value}</p>`;
 
             (this.Dom.level_up_log_view as HTMLElement).innerHTML += inner;
@@ -185,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // 绑定圣遗物获得新词条事件
                 x.on_new_sub_stat_added.subscribe(x => {
                     // 取词条当前强化档位对应的数值
-                    const value = SubStat.get_value_by_rank(x.sub_stat, x.rank);
+                    const value = (StatsTable[x.sub_stat].subStatValue as number[])[x.rank];
 
                     DomController.add_level_up_log("获得词条", x.sub_stat, x.rank);
 
