@@ -1,0 +1,48 @@
+{
+  "flower": {
+    "slot": 0,
+    "allowMainStats": ["hp"],
+    "localization": {
+      "zh_cn": "生之花"
+    }
+  },
+  "plume": {
+    "slot": 1,
+    "allowMainStats": ["atk"],
+    "localization": {
+      "zh_cn": "死之羽"
+    }
+  },
+  "sands": {
+    "slot": 2,
+    "allowMainStats": [
+      "hpPercent", "atkPercent", "defPercent",
+      "energyRecharge", "elementalMastery"
+    ],
+    "localization": {
+      "zh_cn": "时之沙"
+    }
+  },
+  "goblet": {
+    "slot": 3,
+    "allowMainStats": [
+      "hpPercent", "atkPercent", "defPercent",
+      "elementalDamageBonus", "physicalDamageBonus",
+      "elementalMastery"
+    ],
+    "localization": {
+      "zh_cn": "空之杯"
+    }
+  },
+  "circle": {
+    "slot": 4,
+    "allowMainStats": [
+      "hpPercent", "atkPercent", "defPercent",
+      "criticalRate", "criticalDamage", "healingBonus",
+      "elementalMastery"
+    ],
+    "localization": {
+      "zh_cn": "理之冠"
+    }
+  }
+}
