@@ -34,7 +34,7 @@
       "zh_cn": "空之杯"
     }
   },
-  "circle": {
+  "circlet": {
     "slot": 4,
     "allowMainStats": [
       "hpPercent", "atkPercent", "defPercent",

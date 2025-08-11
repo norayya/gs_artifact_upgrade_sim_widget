@@ -2,30 +2,6 @@ import {MainStat, Stat, SubStat} from "./stat";
 import {get_random_int, ruletka} from "./utils";
 import {Event} from "./event";
 
-/**
- * 圣遗物部位
- */
-export enum ArtifactType {
-    Flower = 0, // 花
-    Plume = 1, // 毛
-    Sands = 2, // 沙
-    Goblet = 3, // 杯
-    Circlet = 4, // 头
-}
-
-/**
- * 圣遗物部位类型翻译
- * @param artifact_type 圣遗物部位类型
- */
-export function ArtifactTypeTranslate(artifact_type: ArtifactType): string{
-    switch(artifact_type){
-        case ArtifactType.Flower: return "生之花";
-        case ArtifactType.Plume: return "死之羽";
-        case ArtifactType.Sands: return "时之沙";
-        case ArtifactType.Goblet: return "空之杯";
-        case ArtifactType.Circlet: return "理之冠"
-    }
-}
 
 /**
  * 副词条
@@ -169,48 +145,6 @@ export class Artifact {
             }
         }
 
-    }
-
-    /**
-     * 根据传入的圣遗物部位取可能出现的主词条类型
-     *
-     * @param {ArtifactType} artifact_type 圣遗物部位
-     *
-     * @returns {Stat} 主词条类型
-     *
-     * @throws {Error} 参数错误
-     */
-    private static get_random_main_stat_by_artifact_type(artifact_type: ArtifactType): Stat {
-        switch (artifact_type) {
-            case ArtifactType.Flower:
-                return Stat.Hp;
-            case ArtifactType.Plume:
-                return Stat.Atk;
-            case ArtifactType.Sands:
-                return ruletka(
-                    [
-                        Stat.HpPercent, Stat.AtkPercent, Stat.DefPercent,
-                        Stat.EnergyRecharge, Stat.ElementalMastery
-                    ]);
-            case ArtifactType.Goblet:
-                return ruletka(
-                    [
-                        Stat.HpPercent, Stat.AtkPercent, Stat.DefPercent,
-                        Stat.ElementalDamageBonus, Stat.PhysicalDamageBonus,
-                        Stat.ElementalMastery
-                    ]
-                );
-            case ArtifactType.Circlet:
-                return ruletka(
-                    [
-                        Stat.HpPercent, Stat.AtkPercent, Stat.DefPercent,
-                        Stat.CriticalRate, Stat.CriticalDamage,
-                        Stat.HealingBonus, Stat.ElementalMastery
-                    ]
-                );
-            default:
-                throw new Error("参数错误");
-        }
     }
 
     /**

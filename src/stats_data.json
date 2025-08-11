@@ -8,6 +8,7 @@
     ],
     "subStatValue":[209,239,269,299],
     "subStatWeight":6,
+    "valueType": "int",
     "localization":{
       "zh_cn":"生命值"
     }
@@ -22,6 +23,7 @@
     ],
     "subStatValue":[14,16,18,19],
     "subStatWeight":6,
+    "valueType": "int",
     "localization":{
       "zh_cn":"攻击力"
     }
@@ -29,6 +31,7 @@
   "def":{
     "subStatValue":[16,19,21,23],
     "subStatWeight":6,
+    "valueType": "int",
     "localization":{
       "zh_cn":"防御力"
     }
@@ -42,6 +45,7 @@
     ],
     "subStatValue":[0.041,0.047,0.053,0.058],
     "subStatWeight":4,
+    "valueType": "float",
     "localization":{
       "zh_cn":"生命值"
     }
@@ -55,6 +59,7 @@
     ],
     "subStatValue":[0.041,0.047,0.053,0.058],
     "subStatWeight":4,
+    "valueType": "float",
     "localization":{
       "zh_cn":"攻击力"
     }
@@ -68,6 +73,7 @@
     ],
     "subStatValue":[0.051,0.058,0.066,0.073],
     "subStatWeight":4,
+    "valueType": "float",
     "localization":{
       "zh_cn":"防御力"
     }
@@ -81,6 +87,7 @@
     ],
     "subStatValue":[16,19,21,23],
     "subStatWeight":4,
+    "valueType": "int",
     "localization":{
       "zh_cn":"元素精通"
     }
@@ -94,6 +101,7 @@
     ],
     "subStatValue":[0.045,0.052,0.058,0.065],
     "subStatWeight":4,
+    "valueType": "float",
     "localization":{
       "zh_cn":"元素充能效率"
     }},
@@ -106,6 +114,7 @@
     ],
     "subStatValue":[0.027,0.031,0.035,0.039],
     "subStatWeight":3,
+    "valueType": "float",
     "localization":{
       "zh_cn":"暴击率"
     }
@@ -119,6 +128,7 @@
     ],
     "subStatValue":[0.054,0.062,0.07,0.078],
     "subStatWeight":3,
+    "valueType": "float",
     "localization":{
       "zh_cn":"暴击伤害"
     }
@@ -130,6 +140,7 @@
       0.206,0.221,0.237,0.252,0.267,
       0.282,0.298,0.313,0.328,0.343,0.359
     ],
+    "valueType": "float",
     "localization":{
       "zh_cn":"治疗加成"
     }
@@ -141,6 +152,7 @@
       0.268,0.288,0.308,0.328,0.348,
       0.367,0.387,0.407,0.427,0.446,0.466
     ],
+    "valueType": "float",
     "localization":{
       "zh_cn":"元素伤害加成"
     }
@@ -152,6 +164,7 @@
       0.335,0.36,0.385,0.409,0.434,
       0.459,0.484,0.508,0.533,0.558,0.583
     ],
+    "valueType": "float",
     "localization":{
       "zh_cn":"物理伤害加成"
     }
