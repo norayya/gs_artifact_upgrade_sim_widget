@@ -4,54 +4,54 @@
 export type EventHandle<T1, T2> = (data: T1, e?: T2) => void;
 
 /**
- * 事件
+ * 事件类型
  */
-export class Event<T1, T2> {
+export type Event<T1, T2> = {
     /**
-     * 事件回调数组
-     * @private
+     * 订阅事件函数
+     * @param handle 当事件触发时执行的函数
      */
-    private handles: EventHandle<T1, T2>[] = [];
-
+    Subscribe(handle: EventHandle<T1, T2>): void;
     /**
-     * 订阅事件
-     *
-     * @param handle
+     * 卸载事件函数
+     * @param handle 当事件触发时执行的函数
      */
-    public subscribe(handle: EventHandle<T1, T2>) {
-        this.handles.push(handle);
-
-    }
-
+    Unsubscribe(handle: EventHandle<T1, T2>): void;
     /**
-     * 解除订阅事件
-     *
-     * @param handle
+     * 清除事件列表
      */
-    public unsubscribe(handle: EventHandle<T1, T2>) {
-        this.handles = this.handles.filter(h => h !== handle);
-    }
-
-    /**
-     * 清除所有事件
-     */
-    public clear_subscribe(){
-        this.handles = [];
-    }
-
+    CleanSubscribe(): void;
     /**
      * 触发事件
-     *
-     * @template T
-     *
-     * @param {T} data 通知信息
-     * @param {any?} e 事件附加内容
+     * @param data 传递给事件的数据
+     * @param e 附加数据
      */
-    public emit(data: T1, e?: T2){
-        for(let i = 0; i < this.handles.length; i++){
-            const fn = this.handles[i];
+    Emit(data: T1, e?: T2): void
+}
 
-            fn(data, e);
+/**
+ * 创建一个事件
+ */
+export function NewEvent<T1, T2>(): Event<T1, T2> {
+    // 事件处理函数数组
+    let eventHandles: EventHandle<T1, T2>[] ;
+
+    return {
+        Subscribe(handle: EventHandle<T1, T2>): void {
+            eventHandles.push(handle);
+        },
+        Unsubscribe(handle: EventHandle<T1, T2>): void {
+            eventHandles = eventHandles.filter(h => h !== handle);
+        },
+        CleanSubscribe(): void {
+            eventHandles = [];
+        },
+        Emit(data: T1, e?: T2): void {
+            for(let i = 0; i< eventHandles.length; i++) {
+                const event = eventHandles[i];
+                event(data, e);
+            }
         }
     }
+
 }

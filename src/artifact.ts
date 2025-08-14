@@ -1,25 +1,53 @@
 import { GetRandom, Ruletka, ValueType} from "./utils";
-import {Event} from "./event";
+import {Event, NewEvent} from "./event";
 import {ArtifactType, Stat} from "./types";
 import {GetNewSubStat, GetRandomMainStatByArtifactType} from "./stats_data";
 
-type Artifact = {
+/**
+ * 圣遗物
+ */
+export type Artifact = {
+    /**
+     * 圣遗物升级事件
+     */
     OnArtifactLevelUpgraded(): Event<ArtifactLevelUpgradedEventData, undefined>;
+    /**
+     * 圣遗物副词条被添加事件
+     */
     OnArtifactSubStatAddedOrUpgraded(): Event<ArtifactSubStatAddedEventData, undefined>;
-    LevelUpgrade(level: number): void;
+    /**
+     * 圣遗物升一级
+     */
+    LevelUpgrade(): void;
+    /**
+     * 获取当前圣遗物强化等级
+     */
     CurrentLevel(): number;
+    /**
+     * 获取当前圣遗物的主词条
+     */
     GetMainStat(): Stat
 }
 
+/**
+ * 圣遗物升级事件数据类型
+ */
 type ArtifactLevelUpgradedEventData = {
     currentLevel: number
 }
 
+/**
+ * 圣遗物副词条被添加时事件数据类型
+ */
 type ArtifactSubStatAddedEventData = {
     subStat: Stat,
     upgradeRank: number
 }
 
+/**
+ * 新建圣遗物
+ * @param artifactType 圣遗物部位
+ */
 export function NewArtifact(artifactType: ArtifactType): Artifact {
     // 圣遗物升级事件
     let onArtifactLevelUpgraded: Event<ArtifactLevelUpgradedEventData, undefined>;
@@ -59,8 +87,8 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
     // 初始化闭包
     (()=> {
         // 初始化事件
-        onArtifactLevelUpgraded = new Event<ArtifactLevelUpgradedEventData, undefined>();
-        onArtifactSubStatAddedOrUpgraded = new Event<ArtifactSubStatAddedEventData, undefined>();
+        onArtifactLevelUpgraded = NewEvent<ArtifactLevelUpgradedEventData, undefined>();
+        onArtifactSubStatAddedOrUpgraded = NewEvent<ArtifactSubStatAddedEventData, undefined>();
 
         // 设置初始强化等级
         currentLevel = 0;
@@ -74,14 +102,12 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
         for(let i = 0; i < c; i++) {
             const result = addNewSubStat();
             // 触发词条添加事件
-            onArtifactSubStatAddedOrUpgraded.emit({
+            onArtifactSubStatAddedOrUpgraded.Emit({
                 subStat: result.subStat,
                 upgradeRank: result.rank[0]
             })
         }
-
-
-    })();
+    })(); // 执行初始化函数
 
 
     return {
@@ -110,7 +136,7 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
                     // 添加一个随机词条
                     const result = addNewSubStat();
                     // 触发词条添加事件
-                    onArtifactSubStatAddedOrUpgraded.emit({
+                    onArtifactSubStatAddedOrUpgraded.Emit({
                         subStat: result.subStat,
                         upgradeRank: result.rank[0]
                     })
@@ -122,14 +148,14 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
                     const stat = Ruletka(subStats);
                     stat.rank.push(randomRank);
                     // 触发词条强化事件
-                    onArtifactSubStatAddedOrUpgraded.emit({
+                    onArtifactSubStatAddedOrUpgraded.Emit({
                         subStat: stat.subStat,
                         upgradeRank: randomRank
                     })
                 }
 
                 // 触发圣遗物升级事件
-                onArtifactLevelUpgraded.emit({
+                onArtifactLevelUpgraded.Emit({
                     currentLevel: currentLevel
                 });
 
@@ -146,8 +172,6 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
         }
 
     }
-
-
 
 }
 
