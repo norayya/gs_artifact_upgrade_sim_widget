@@ -1,7 +1,7 @@
-import { GetRandom, Ruletka, ValueType} from "./utils";
-import {Event, NewEvent} from "./event";
-import {ArtifactType, Stat} from "./types";
-import {GetNewSubStat, GetRandomMainStatByArtifactType} from "./stats_data";
+import { GetRandom, Ruletka, ValueType } from "./utils";
+import { Event, NewEvent } from "./event";
+import { ArtifactType, Stat } from "./data_types";
+import { GetNewSubStat, GetRandomMainStatByArtifactType } from "./data";
 
 /**
  * 圣遗物
@@ -32,14 +32,14 @@ export type Artifact = {
 /**
  * 圣遗物升级事件数据类型
  */
-type ArtifactLevelUpgradedEventData = {
+export type ArtifactLevelUpgradedEventData = {
     currentLevel: number
 }
 
 /**
  * 圣遗物副词条被添加时事件数据类型
  */
-type ArtifactSubStatAddedEventData = {
+export type ArtifactSubStatAddedEventData = {
     subStat: Stat,
     upgradeRank: number
 }
@@ -70,6 +70,7 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
             return x.subStat;
         });
 
+
         const newSubStatObject = {
             // 选出一个随机词条
             subStat: GetNewSubStat(subStatsArray),
@@ -77,11 +78,13 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
             rank: [GetRandom(ValueType.Int, 0, 4)],
         };
 
+
         // 插入词条
         subStats.push(newSubStatObject);
 
         // 返回该次选出的新词条
-        return { ...newSubStatObject };
+        return {...newSubStatObject};
+
     }
 
     // 初始化闭包

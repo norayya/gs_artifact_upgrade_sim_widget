@@ -1,8 +1,7 @@
-import s_data from "./stats_data.json";
-import a_data from "./artifact_types_data.json";
-import {Stat, StatsTable, ArtifactType, ArtifactTypesTable} from "./types";
-import {Ruletka, GetRandom, ValueType} from "./utils";
-
+import s_data from "../data/stats_data.json";
+import a_data from "../data/artifact_types_data.json";
+import { Stat, StatsTable, ArtifactType, ArtifactTypesTable } from "./data_types";
+import { Ruletka, GetRandom, ValueType } from "./utils";
 
 
 
@@ -87,7 +86,7 @@ export function GetNewSubStat(currentStats: Stat[]): Stat {
 
     // 没有命中词条, 那么可能是算法出了问题
 
-    throw new Error(`unknown error`);
+    throw new Error(`Unknown Error`);
 }
 
 /**

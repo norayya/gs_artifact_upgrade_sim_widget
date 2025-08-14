@@ -68,3 +68,5 @@ export type ArtifactTypesTableObject = {
  * 圣遗物部位对象表
  */
 export type ArtifactTypesTable = Record<ArtifactType, ArtifactTypesTableObject>;
+
+
