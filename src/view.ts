@@ -100,13 +100,13 @@ export function NewDomManager(domObjs: DomObject) {
 
             },
         // 添加圣遗物强化日志
-        AddLevelUpgradeLogView(subStat: Stat, upgradeRank: number): void {
+        AddLevelUpgradeLogView(currentLevel: number, subStat: Stat, upgradeRank: number): void {
             if(dom.levelUpgradeLogView === null){
                 throw new Error("Level upgrade view not found.");
             }
 
             const value = GetSubStatValue(subStat, upgradeRank);
-            const html = `<p>${GetStatLocalization(subStat, "zh_cn")}, +${value > 1 ? value : FloatToPercentString(value, 2, false)}</p>`;
+            const html = `<p>+${currentLevel}: ${GetStatLocalization(subStat, "zh_cn")}, +${value > 1 ? value : FloatToPercentString(value, 2, false)}</p>`;
             dom.levelUpgradeLogView.innerHTML += html;
 
         },

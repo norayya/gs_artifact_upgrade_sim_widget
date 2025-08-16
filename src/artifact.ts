@@ -52,6 +52,7 @@ export type ArtifactLevelUpgradedEventData = {
  * 圣遗物副词条被添加时事件数据类型
  */
 export type ArtifactSubStatAddedEventData = {
+    currentLevel: number,
     subStat: Stat,
     upgradeRank: number
 }
@@ -129,6 +130,7 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
             const result = addNewSubStat();
             // 触发词条添加事件
             onArtifactSubStatAddedOrUpgraded.Emit({
+                currentLevel: currentLevel,
                 subStat: result.subStat,
                 upgradeRank: result.rank[0]
             })
@@ -163,6 +165,7 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
                     const result = addNewSubStat();
                     // 触发词条添加事件
                     onArtifactSubStatAddedOrUpgraded.Emit({
+                        currentLevel: currentLevel,
                         subStat: result.subStat,
                         upgradeRank: result.rank[0]
                     })
@@ -175,6 +178,7 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
                     stat.rank.push(randomRank);
                     // 触发词条强化事件
                     onArtifactSubStatAddedOrUpgraded.Emit({
+                        currentLevel: currentLevel,
                         subStat: stat.subStat,
                         upgradeRank: randomRank
                     })

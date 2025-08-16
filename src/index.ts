@@ -35,14 +35,14 @@ const generateArtifactButtonEvent = (event: Event)=> {
         if(artifact !== undefined) {
             // 更新圣遗物详情
             domManager.UpdateArtifactView(
-                artifact.GetArtifactType(),
-                { stat: artifact.GetMainStat(), currentLevel: artifact.CurrentLevel() },
-                artifact.GetSubStats()
+                handle.artifactType,
+                { stat: handle.mainStat, currentLevel: handle.currentLevel },
+                handle.subStats
             );
         }
     });
     artifact.OnArtifactSubStatAddedOrUpgraded().Subscribe(handle=> {
-        domManager.AddLevelUpgradeLogView(handle.subStat, handle.upgradeRank);
+        domManager.AddLevelUpgradeLogView(handle.currentLevel, handle.subStat, handle.upgradeRank);
     });
 
     // 初始强化
