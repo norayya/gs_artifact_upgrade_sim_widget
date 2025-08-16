@@ -34,7 +34,7 @@ export type Event<T1, T2> = {
  */
 export function NewEvent<T1, T2>(): Event<T1, T2> {
     // 事件处理函数数组
-    let eventHandles: EventHandle<T1, T2>[] ;
+    let eventHandles: EventHandle<T1, T2>[] = [];
 
     return {
         Subscribe(handle: EventHandle<T1, T2>): void {

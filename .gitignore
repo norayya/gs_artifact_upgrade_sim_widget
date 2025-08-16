@@ -406,4 +406,5 @@ FodyWeavers.xsd
 
 .DS_store
 
+target/*.html
 target/*.js

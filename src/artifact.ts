@@ -26,14 +26,26 @@ export type Artifact = {
     /**
      * 获取当前圣遗物的主词条
      */
-    GetMainStat(): Stat
+    GetMainStat(): Stat;
+    /**
+     * 获取当前圣遗物的部位类型
+     */
+    GetArtifactType(): ArtifactType;
+    /**
+     * 获取当前圣遗物副词条集合
+     */
+    GetSubStats():SubStats[];
 }
 
 /**
  * 圣遗物升级事件数据类型
  */
 export type ArtifactLevelUpgradedEventData = {
+    artifactType: ArtifactType;
+    mainStat: Stat;
     currentLevel: number
+    subStats: SubStats[];
+
 }
 
 /**
@@ -42,6 +54,14 @@ export type ArtifactLevelUpgradedEventData = {
 export type ArtifactSubStatAddedEventData = {
     subStat: Stat,
     upgradeRank: number
+}
+
+/**
+ * 副词条集合
+ */
+export type SubStats = {
+    subStat: Stat,
+    rank: number[]
 }
 
 /**
@@ -61,14 +81,15 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
     let mainStat: Stat;
 
     // 副词条集合
-    let subStats: { subStat: Stat, rank: number[] }[];
+    let subStats: SubStats[];
 
     // 为圣遗物添加一个副词条
-    const addNewSubStat = ():{ subStat: Stat, rank: number[]} => {
+    const addNewSubStat = (): SubStats => {
         // 已有词条集合
         const subStatsArray = subStats.map(x => {
             return x.subStat;
         });
+
 
 
         const newSubStatObject = {
@@ -97,6 +118,8 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
         currentLevel = 0;
         // 随机选取主词条
         mainStat = GetRandomMainStatByArtifactType(artifactType);
+        // 设置初始空集合
+        subStats = [];
 
         // 随机决定初始副词条的数量
         const c = GetRandom(ValueType.Int, 0, 2000) % 2 === 0 ? 3 : 4;
@@ -159,10 +182,21 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
 
                 // 触发圣遗物升级事件
                 onArtifactLevelUpgraded.Emit({
-                    currentLevel: currentLevel
+                    artifactType: artifactType,
+                    mainStat: mainStat,
+                    currentLevel: currentLevel,
+                    subStats: subStats
                 });
 
             }
+
+            // 触发圣遗物升级事件
+            onArtifactLevelUpgraded.Emit({
+                artifactType: artifactType,
+                mainStat: mainStat,
+                currentLevel: currentLevel,
+                subStats: subStats
+            });
 
 
 
@@ -172,8 +206,13 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
         },
         GetMainStat(): Stat {
             return mainStat;
+        },
+        GetArtifactType(): ArtifactType {
+            return artifactType;
+        },
+        GetSubStats():SubStats[] {
+            return subStats;
         }
-
     }
 
 }

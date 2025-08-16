@@ -1,8 +1,7 @@
 import s_data from "../data/stats_data.json";
 import a_data from "../data/artifact_types_data.json";
-import { Stat, StatsTable, ArtifactType, ArtifactTypesTable } from "./data_types";
-import { Ruletka, GetRandom, ValueType } from "./utils";
-
+import {ArtifactType, ArtifactTypesTable, Stat, StatsTable} from "./data_types";
+import {GetRandom, Ruletka, ValueType} from "./utils";
 
 
 // 引入数据文件并反序列到对象
@@ -98,4 +97,109 @@ export function GetNewSubStat(currentStats: Stat[]): Stat {
  */
 export function GetRandomMainStatByArtifactType(artifactType: ArtifactType): Stat {
     return Ruletka(artifact_data[artifactType].allowMainStats);
+}
+
+/**
+ * 根据传入的Dom中的圣遗物列表的index选取圣遗物部位
+ * 0: 花, 1: 毛, 2:沙, 3:杯, 4:头
+ * @param index Dom中的圣遗物列表index
+ *
+ * @returns 圣遗物部位
+ */
+export function ArtifactIndexToType(index: number): ArtifactType {
+    switch (index) {
+        case 0:
+            return ArtifactType.Flower;
+        case 1:
+            return ArtifactType.Plume;
+        case 2:
+            return ArtifactType.Sands;
+        case 3:
+            return ArtifactType.Goblet;
+        case 4:
+            return ArtifactType.Circlet;
+        default:
+            throw new Error(`Unknown Artifact Type index, index does not exist`);
+    }
+}
+
+/**
+ * 获取词条类型名称的本地化翻译
+ * @param stat 词条
+ * @param lang 语言类型, zh_cn: 简体中文
+ *
+ * @returns 本地化翻译名称
+ */
+export function GetStatLocalization(stat: Stat, lang: string): string {
+    const localization = stats_data[stat].localization;
+    if(localization === undefined){
+        throw new Error(`Unknown Localization`);
+    }
+
+    const r = localization[lang];
+    if(r === undefined){
+        throw new Error(`Unknown Localization`);
+    }
+
+    return r;
+}
+
+/**
+ * 获取圣遗物部位名称的本地化翻译
+ *
+ * @param artifactType 圣遗物部位
+ * @param lang 语言类型， zh_cn: 简体中文
+ *
+ * @returns 本地化翻译名称
+ */
+export function GetArtifactTypeLocalization(artifactType: ArtifactType, lang: string): string {
+    const localization = artifact_data[artifactType].localization;
+    if(localization === undefined){
+        throw new Error(`Unknown Localization`);
+    }
+    const r = localization[lang];
+    if(r === undefined){
+        throw new Error(`Unknown Localization`);
+    }
+    return r;
+}
+
+/**
+ * 根据副词条的强化rank获取对应的强化值
+ *
+ * @param subStat 副词条类型
+ * @param rank 强化等级
+ *
+ * @returns 对应的强化值
+ */
+export function GetSubStatValue(subStat: Stat, rank: number): number {
+   if(rank < 0 || rank > 3) {
+       throw new Error(`rank must be between 0 and 3`);
+   }
+
+   const subStatValues = stats_data[subStat].subStatValue;
+   if(subStatValues === undefined){
+       throw new Error(`SunStatValue is undefined`);
+   }
+
+   return subStatValues[rank];
+}
+
+/**
+ * 根据强化等级获取对应的主词条数值
+ * @param mainStat 主词条类型
+ * @param currentLevel 强化等级
+ * @returns 对应的强化值
+ */
+export function GetMainStatValue(mainStat: Stat, currentLevel: number): number {
+    if(currentLevel <0 || currentLevel > 20){
+        throw new Error(`currentLevel must be between 0 and 20`);
+    }
+
+    const mainStatValues = stats_data[mainStat].mainStatValue;
+    if(mainStatValues === undefined){
+        throw new Error(`MainStatValue is undefined`);
+    }
+
+    return mainStatValues[currentLevel];
 }
