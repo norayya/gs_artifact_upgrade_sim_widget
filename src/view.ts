@@ -21,7 +21,6 @@ export type DomObject = {
     artifactView: HTMLElement | null,
     initLevelInput: HTMLElement | null,
     initArtifactTypeSelect: HTMLElement | null,
-    generateArtifactButton: HTMLElement | null,
     levelUpgradeLogView: HTMLElement | null,
     levelUpgradeButton: HTMLElement | null,
 }

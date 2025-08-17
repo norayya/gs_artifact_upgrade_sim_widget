@@ -218,6 +218,4 @@ export function NewArtifact(artifactType: ArtifactType): Artifact {
             return subStats;
         }
     }
-
 }
-
