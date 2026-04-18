@@ -16,8 +16,8 @@ function artifactSubStatValue(stat: StatType, upgradeLevel: number): string {
 
 <template>
   <div id="artifact_upgrade_log_view" class="artifact_upgrade_log_view">
-    <div v-for="minorAffix in props.currentArtifact?.minorAffixes.filter(x => x.showOnLog === true)" :key="minorAffix.subStat">
-        {{ getStatName(minorAffix.subStat)}} {{ `+ ${artifactSubStatValue(minorAffix.subStat, minorAffix.upgradeLevel)}` }}
+    <div v-for="(minorAffix, index) in props.currentArtifact?.minorAffixes.filter(x => x.showOnLog === true)" :key="minorAffix.subStat">
+        {{`+${(index+1)*4}:`}} {{ getStatName(minorAffix.subStat)}} {{ `+${artifactSubStatValue(minorAffix.subStat, minorAffix.upgradeLevel)}` }}
       </div>
     </div>
 </template>
